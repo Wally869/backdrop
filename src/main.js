@@ -67,6 +67,22 @@ if (!world.arrivals.length) throw new Error(`map ${world.id} has no arrivals`);
 const controller = new Controller({ world, character, canvas: renderer.domElement });
 controller.setWorld(world, world.arrivals.find((a) => a.name === "start") || world.arrivals[0]);
 
+// Controls popup: open on start (not under automation, so the smoke checks can click the canvas), H or ? reopens it.
+// Input is locked while it is open.
+const help = document.getElementById("help");
+function setHelp(open) {
+  help.hidden = !open;
+  if (open) controller.stop();
+  controller.locked = open || transitioning;
+}
+help.querySelector("button.go").addEventListener("click", () => setHelp(false));
+help.addEventListener("click", (e) => { if (e.target === help) setHelp(false); });
+document.getElementById("help-open").addEventListener("click", (e) => { e.currentTarget.blur(); setHelp(true); });
+window.addEventListener("keydown", (e) => {
+  if (e.code === "KeyH") setHelp(help.hidden);
+  else if (!help.hidden && (e.code === "Escape" || e.code === "Enter")) setHelp(false);
+});
+
 // Map transition: cancel orders, fade to black, swap the map, place the character at the target arrival, fade back.
 let transitioning = false;
 async function transition(exit) {
@@ -87,7 +103,7 @@ async function transition(exit) {
     old.dispose();
     await setFade(false);
   } finally {
-    controller.locked = false;
+    controller.locked = !help.hidden;
     transitioning = false;
   }
 }
@@ -98,7 +114,7 @@ function checkExits() {
   if (exit) transition(exit).catch((err) => console.error("transition failed", err));
 }
 
-console.info("controls: click = walk, double-click = run, W/A/S/arrows = walk (relative to the camera; right = ArrowRight), hold Shift = run, click the bench = sit, D = debug view");
+setHelp(!navigator.webdriver);
 
 // Test hook for tools/smoke.mjs.
 window.__debug = {

@@ -10,10 +10,45 @@
       #stage { position: absolute; background: center / 100% 100% no-repeat; } /* plate image set by main.js */
       #stage canvas { display: block; width: 100%; height: 100%; }
       #fade { position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none; z-index: 1; transition: opacity 0.3s linear; }
+      /* controls popup (main.js opens it on start; H or the ? button reopens it) */
+      #help { position: fixed; inset: 0; z-index: 3; display: flex; align-items: center; justify-content: center; background: rgba(10, 14, 24, 0.55); font: 15px/1.45 system-ui, sans-serif; color: #e8ecf2; }
+      #help[hidden] { display: none; }
+      #help .card { max-width: 540px; margin: 16px; padding: 22px 26px; background: rgba(22, 28, 40, 0.94); border: 1px solid #3a4558; border-radius: 10px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); }
+      #help h1 { margin: 0 0 4px; font-size: 22px; }
+      #help h2 { margin: 16px 0 6px; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #f0b54a; }
+      #help p { margin: 0; color: #b9c2d0; }
+      #help table { border-collapse: collapse; }
+      #help td { padding: 2px 14px 2px 0; vertical-align: top; }
+      #help td:first-child { white-space: nowrap; }
+      #help kbd { display: inline-block; min-width: 1.3em; padding: 0 5px; text-align: center; font: 12px/1.6 ui-monospace, monospace; color: #fff; background: #333d4f; border: 1px solid #56627a; border-bottom-width: 2px; border-radius: 4px; }
+      #help a { color: #8ec5ff; }
+      #help button.go { margin-top: 18px; width: 100%; padding: 9px; font: 600 15px system-ui, sans-serif; color: #1a1f2a; background: #f0b54a; border: 0; border-radius: 6px; cursor: pointer; }
+      #help-open { position: fixed; top: 12px; right: 12px; z-index: 2; width: 32px; height: 32px; font: 700 16px system-ui, sans-serif; color: #fff; background: rgba(22, 28, 40, 0.7); border: 1px solid #56627a; border-radius: 50%; cursor: pointer; }
     </style>
   </head>
   <body>
     <div id="stage"><div id="fade"></div></div>
+    <button id="help-open" title="Controls (H)">?</button>
+    <div id="help" hidden>
+      <div class="card">
+        <h1>backdrop</h1>
+        <p>Each map is one flat 2D painting. A camera matched to the painting and invisible 3D geometry let a 3D robot walk in it: behind objects, up stairs, with shadows on the ground.</p>
+        <h2>Move</h2>
+        <table>
+          <tr><td>Click</td><td>walk to the point</td></tr>
+          <tr><td>Double-click</td><td>run to the point</td></tr>
+          <tr><td><kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> / arrows</td><td>walk (relative to the camera)</td></tr>
+          <tr><td>Hold <kbd>Shift</kbd></td><td>run</td></tr>
+          <tr><td>Click the bench</td><td>sit (first map)</td></tr>
+        </table>
+        <h2>Debug layer</h2>
+        <p><kbd>D</kbd> shows the hidden 3D geometry over the painting: the proxy boxes that hide the robot, the walkable area, a 1 m grid, and the exits to the other maps. (Because <kbd>D</kbd> is the debug key, move right with the right arrow.)</p>
+        <h2>3 maps</h2>
+        <p>Street, plaza and stairs. Walk to the far end of the street to reach the plaza; the gap at the far right of the plaza leads to the stairs. Or jump straight in: <a href="?map=plate_01">street</a> · <a href="?map=plate_02">plaza</a> · <a href="?map=plate_03">stairs</a>.</p>
+        <p style="margin-top: 12px">Press <kbd>H</kbd> or the <kbd>?</kbd> button to see this again.</p>
+        <button class="go">Start</button>
+      </div>
+    </div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
