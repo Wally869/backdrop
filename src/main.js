@@ -3,6 +3,8 @@ import { loadScene, screenSize } from "./scene.js";
 import { loadCharacter } from "./character.js";
 import { Controller } from "./controller.js";
 import { pointInPolygon } from "./walkable.js";
+import "@fontsource-variable/inter"; // controls popup
+import "@fontsource-variable/fraunces";
 
 // The plate is a CSS background of #stage (16:9, letterboxed); the transparent
 // three.js canvas fills #stage, so 3D content shares the plate's frame.
@@ -72,7 +74,10 @@ controller.setWorld(world, world.arrivals.find((a) => a.name === "start") || wor
 const help = document.getElementById("help");
 function setHelp(open) {
   help.hidden = !open;
-  if (open) controller.stop();
+  if (open) {
+    controller.stop();
+    for (const a of help.querySelectorAll(".maps a")) a.classList.toggle("here", a.dataset.map === world.id);
+  }
   controller.locked = open || transitioning;
 }
 help.querySelector("button.go").addEventListener("click", () => setHelp(false));

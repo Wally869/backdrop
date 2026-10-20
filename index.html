@@ -10,20 +10,92 @@
       #stage { position: absolute; background: center / 100% 100% no-repeat; } /* plate image set by main.js */
       #stage canvas { display: block; width: 100%; height: 100%; }
       #fade { position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none; z-index: 1; transition: opacity 0.3s linear; }
-      /* controls popup (main.js opens it on start; H or the ? button reopens it) */
-      #help { position: fixed; inset: 0; z-index: 3; display: flex; align-items: center; justify-content: center; background: rgba(10, 14, 24, 0.55); font: 15px/1.45 system-ui, sans-serif; color: #e8ecf2; }
+
+      /* Controls popup: main.js opens it on start; H or the ? button reopens it. Fonts are imported in main.js. */
+      :root { --ink: #eef1f6; --muted: #9aa4b4; --accent: #ffcf86; --glass: rgba(15, 19, 28, 0.88); --line: rgba(255, 255, 255, 0.11); }
+      #help {
+        position: fixed; inset: 0; z-index: 3; box-sizing: border-box;
+        display: flex; align-items: flex-end; justify-content: center; padding: 24px 24px 5vh;
+        background: linear-gradient(to top, rgba(6, 9, 16, 0.62) 0%, rgba(6, 9, 16, 0.22) 50%, rgba(6, 9, 16, 0) 75%);
+        font-family: 'Inter Variable', system-ui, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased;
+        animation: help-fade 0.35s ease-out;
+      }
       #help[hidden] { display: none; }
-      #help .card { max-width: 540px; margin: 16px; padding: 22px 26px; background: rgba(22, 28, 40, 0.94); border: 1px solid #3a4558; border-radius: 10px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); }
-      #help h1 { margin: 0 0 4px; font-size: 22px; }
-      #help h2 { margin: 16px 0 6px; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #f0b54a; }
-      #help p { margin: 0; color: #b9c2d0; }
-      #help table { border-collapse: collapse; }
-      #help td { padding: 2px 14px 2px 0; vertical-align: top; }
-      #help td:first-child { white-space: nowrap; }
-      #help kbd { display: inline-block; min-width: 1.3em; padding: 0 5px; text-align: center; font: 12px/1.6 ui-monospace, monospace; color: #fff; background: #333d4f; border: 1px solid #56627a; border-bottom-width: 2px; border-radius: 4px; }
-      #help a { color: #8ec5ff; }
-      #help button.go { margin-top: 18px; width: 100%; padding: 9px; font: 600 15px system-ui, sans-serif; color: #1a1f2a; background: #f0b54a; border: 0; border-radius: 6px; cursor: pointer; }
-      #help-open { position: fixed; top: 12px; right: 12px; z-index: 2; width: 32px; height: 32px; font: 700 16px system-ui, sans-serif; color: #fff; background: rgba(22, 28, 40, 0.7); border: 1px solid #56627a; border-radius: 50%; cursor: pointer; }
+      #help .card {
+        width: min(1000px, 100%); max-height: 100%; overflow: auto; box-sizing: border-box; padding: 28px 34px 30px;
+        background: var(--glass); backdrop-filter: blur(24px) saturate(1.3); -webkit-backdrop-filter: blur(24px) saturate(1.3);
+        border: 1px solid var(--line); border-radius: 20px;
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        animation: help-rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+      @keyframes help-fade { from { opacity: 0; } }
+      @keyframes help-rise { from { opacity: 0; transform: translateY(18px); } }
+
+      #help .head { display: flex; align-items: flex-end; justify-content: space-between; gap: 28px; padding-bottom: 22px; margin-bottom: 24px; border-bottom: 1px solid var(--line); }
+      #help h1 { margin: 0 0 10px; font: 600 48px/1 'Fraunces Variable', Georgia, serif; letter-spacing: -0.015em; }
+      #help .tagline { margin: 0 0 6px; font-size: 18px; font-weight: 500; }
+      #help .sub { margin: 0; max-width: 640px; font-size: 14.5px; line-height: 1.55; color: var(--muted); }
+      #help .go {
+        flex: none; display: flex; align-items: center; gap: 12px; padding: 13px 16px 13px 26px; cursor: pointer;
+        font: 600 15px 'Inter Variable', system-ui, sans-serif; color: #151922; background: #f6f1e7;
+        border: 0; border-radius: 999px; box-shadow: 0 8px 22px rgba(0, 0, 0, 0.32); transition: background 0.15s, transform 0.15s;
+      }
+      #help .go:hover { background: #fff; transform: translateY(-1px); }
+      #help .go small { padding: 3px 8px; font-size: 11.5px; font-weight: 600; color: #5d6474; background: rgba(0, 0, 0, 0.07); border-radius: 999px; }
+
+      #help .cols { display: grid; grid-template-columns: 1fr 1fr 1.15fr; gap: 36px; }
+      #help h2 { margin: 0 0 14px; font-size: 11.5px; font-weight: 650; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); }
+      #help ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+      #help li { display: flex; align-items: center; justify-content: space-between; gap: 14px; min-height: 28px; font-size: 14.5px; color: #dde2ea; }
+      #help .keys { display: flex; align-items: center; gap: 5px; flex: none; font-size: 12.5px; color: var(--muted); }
+      #help kbd {
+        display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; min-width: 26px; height: 26px; padding: 0 7px;
+        font: 600 12.5px 'Inter Variable', system-ui, sans-serif; color: #fff;
+        background: linear-gradient(#3b4356, #2b3142); border: 1px solid rgba(255, 255, 255, 0.16); border-bottom: 3px solid rgba(0, 0, 0, 0.4); border-radius: 6px;
+      }
+      #help kbd.mouse { color: var(--ink); background: transparent; border: 1px solid rgba(255, 255, 255, 0.24); border-radius: 999px; padding: 0 10px; }
+      #help .note { margin: 14px 0 0; font-size: 12.5px; line-height: 1.5; color: var(--muted); }
+
+      #help .maps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+      #help .maps a { color: #dde2ea; font-size: 13px; font-weight: 500; text-decoration: none; }
+      #help .maps img {
+        display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; margin-bottom: 7px;
+        border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 8px; transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+      }
+      #help .maps a:hover img { transform: translateY(-2px); border-color: rgba(255, 255, 255, 0.5); }
+      #help .maps a.here img { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+      #help .maps a.here::after { content: ' · here'; color: var(--accent); }
+
+      @media (max-height: 800px) and (min-width: 601px) {
+        #help { padding-bottom: 3vh; }
+        #help .card { padding: 22px 30px 24px; }
+        #help .head { padding-bottom: 16px; margin-bottom: 18px; }
+        #help h1 { font-size: 40px; margin-bottom: 8px; }
+        #help .tagline { font-size: 17px; }
+        #help .sub { font-size: 14px; }
+        #help ul { gap: 7px; }
+        #help .note { margin-top: 10px; }
+      }
+      @media (max-width: 880px) {
+        #help .cols { grid-template-columns: 1fr 1fr; }
+        #help .cols > :last-child { grid-column: 1 / -1; }
+      }
+      @media (max-width: 600px) {
+        #help { align-items: center; padding: 12px; }
+        #help .card { padding: 22px 20px; }
+        #help .head { flex-direction: column; align-items: stretch; }
+        #help .go { justify-content: center; }
+        #help h1 { font-size: 38px; }
+        #help .cols { grid-template-columns: 1fr; gap: 26px; }
+      }
+
+      #help-open {
+        position: fixed; top: 16px; right: 16px; z-index: 2; width: 38px; height: 38px; cursor: pointer;
+        font: 600 16px 'Inter Variable', system-ui, sans-serif; color: #fff;
+        background: rgba(16, 20, 30, 0.55); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 50%; transition: background 0.15s;
+      }
+      #help-open:hover { background: rgba(16, 20, 30, 0.8); }
     </style>
   </head>
   <body>
@@ -31,22 +103,44 @@
     <button id="help-open" title="Controls (H)">?</button>
     <div id="help" hidden>
       <div class="card">
-        <h1>backdrop</h1>
-        <p>Each map is one flat 2D painting. A camera matched to the painting and invisible 3D geometry let a 3D robot walk in it: behind objects, up stairs, with shadows on the ground.</p>
-        <h2>Move</h2>
-        <table>
-          <tr><td>Click</td><td>walk to the point</td></tr>
-          <tr><td>Double-click</td><td>run to the point</td></tr>
-          <tr><td><kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> / arrows</td><td>walk (relative to the camera)</td></tr>
-          <tr><td>Hold <kbd>Shift</kbd></td><td>run</td></tr>
-          <tr><td>Click the bench</td><td>sit (first map)</td></tr>
-        </table>
-        <h2>Debug layer</h2>
-        <p><kbd>G</kbd> shows the hidden 3D geometry over the painting: the proxy boxes that hide the robot, the walkable area, a 1 m grid, and the exits to the other maps.</p>
-        <h2>3 maps</h2>
-        <p>Street, plaza and stairs. Walk to the far end of the street to reach the plaza; the gap at the far right of the plaza leads to the stairs. Or jump straight in: <a href="?map=plate_01">street</a> · <a href="?map=plate_02">plaza</a> · <a href="?map=plate_03">stairs</a>.</p>
-        <p style="margin-top: 12px">Press <kbd>H</kbd> or the <kbd>?</kbd> button to see this again.</p>
-        <button class="go">Start</button>
+        <div class="head">
+          <div>
+            <h1>backdrop</h1>
+            <p class="tagline">A 3D robot walking inside flat 2D paintings.</p>
+            <p class="sub">Each map is a single painted image. A camera matched to the painting and invisible 3D geometry give it depth: the robot walks behind objects, climbs stairs and casts shadows.</p>
+          </div>
+          <button class="go">Start walking <small>Enter</small></button>
+        </div>
+        <div class="cols">
+          <section>
+            <h2>Move</h2>
+            <ul>
+              <li>Walk there<span class="keys"><kbd class="mouse">Click</kbd></span></li>
+              <li>Run there<span class="keys"><kbd class="mouse">Double-click</kbd></span></li>
+              <li>Walk<span class="keys"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></span></li>
+              <li>Run<span class="keys">hold <kbd>Shift</kbd></span></li>
+            </ul>
+            <p class="note">Arrow keys work too. <span style="white-space: nowrap">On AZERTY: Z Q S D.</span></p>
+          </section>
+          <section>
+            <h2>Explore</h2>
+            <ul>
+              <li>Show the hidden geometry<span class="keys"><kbd>G</kbd></span></li>
+              <li>Sit on the bench<span class="keys"><kbd class="mouse">Click bench</kbd></span></li>
+              <li>Controls<span class="keys"><kbd>H</kbd></span></li>
+            </ul>
+            <p class="note">The debug view draws what the painting hides: the boxes that occlude the robot, the walkable area and the exits.</p>
+          </section>
+          <section>
+            <h2>3 maps</h2>
+            <div class="maps">
+              <a href="?map=plate_01" data-map="plate_01"><img src="/plates/thumbs/plate_01.jpg" alt="" />Street</a>
+              <a href="?map=plate_02" data-map="plate_02"><img src="/plates/thumbs/plate_02.jpg" alt="" />Plaza</a>
+              <a href="?map=plate_03" data-map="plate_03"><img src="/plates/thumbs/plate_03.jpg" alt="" />Stairs</a>
+            </div>
+            <p class="note">Walk off the far end of a map to travel to the next one, or click a map to jump in.</p>
+          </section>
+        </div>
       </div>
     </div>
     <script type="module" src="/src/main.js"></script>
