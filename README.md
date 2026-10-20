@@ -4,6 +4,10 @@ A walkable painted background in three.js. A 2D painted plate is the scene; a ca
 
 Live demo: https://wally869.github.io/backdrop/
 
+![A robot walks behind a bench, sits, then runs through a plaza and climbs painted stairs; the debug view shows the hidden geometry](media/backdrop.gif)
+
+Video: [media/backdrop.mp4](media/backdrop.mp4)
+
 ## Controls
 
 - Click: walk to the point.
