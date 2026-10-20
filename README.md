@@ -31,6 +31,4 @@ Then open the URL that vite prints. `npm run build` makes the static site in `di
 
 ## Credits
 
-Music: generated with Eleven Music (ElevenLabs) on fal.
-
 Character: RobotExpressive by Tomas Laulhe (CC0 1.0), modifications by Don McCurdy. See `public/models/RobotExpressive.README.md`.
