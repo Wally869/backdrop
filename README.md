@@ -15,6 +15,7 @@ Video: [media/backdrop.mp4](media/backdrop.mp4)
 - W/A/S/D or arrow keys: walk relative to the camera. Hold Shift to run.
 - Click the bench (first map): sit.
 - G: debug view (proxies, walkable area, markers).
+- M: music on/off.
 - H: show the controls again.
 
 Walk to the far end of a map to go to the next one. To open a map directly, add `?map=plate_02` or `?map=plate_03` to the URL.
@@ -29,5 +30,7 @@ npm run dev
 Then open the URL that vite prints. `npm run build` makes the static site in `dist/`.
 
 ## Credits
+
+Music: generated with Eleven Music (ElevenLabs) on fal.
 
 Character: RobotExpressive by Tomas Laulhe (CC0 1.0), modifications by Don McCurdy. See `public/models/RobotExpressive.README.md`.

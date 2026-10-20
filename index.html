@@ -95,11 +95,27 @@
         background: rgba(16, 20, 30, 0.55); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 50%; transition: background 0.15s;
       }
-      #help-open:hover { background: rgba(16, 20, 30, 0.8); }
+      #help-open:hover, #music-toggle:hover { background: rgba(16, 20, 30, 0.8); }
+      #music-toggle {
+        position: fixed; top: 16px; right: 64px; z-index: 2; width: 38px; height: 38px; padding: 0; cursor: pointer;
+        display: flex; align-items: center; justify-content: center; color: #fff;
+        background: rgba(16, 20, 30, 0.55); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 50%; transition: background 0.15s;
+      }
+      #music-toggle svg { width: 18px; height: 18px; }
+      #music-toggle .off, #music-toggle.muted .on { display: none; }
+      #music-toggle.muted .off { display: block; }
     </style>
   </head>
   <body>
     <div id="stage"><div id="fade"></div></div>
+    <button id="music-toggle" title="Music on (M)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor" />
+        <path class="on" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13" />
+        <path class="off" d="m16 9 6 6m0-6-6 6" />
+      </svg>
+    </button>
     <button id="help-open" title="Controls (H)">?</button>
     <div id="help" hidden>
       <div class="card">
@@ -127,6 +143,7 @@
             <ul>
               <li>Show the hidden geometry<span class="keys"><kbd>G</kbd></span></li>
               <li>Sit on the bench<span class="keys"><kbd class="mouse">Click bench</kbd></span></li>
+              <li>Music on / off<span class="keys"><kbd>M</kbd></span></li>
               <li>Controls<span class="keys"><kbd>H</kbd></span></li>
             </ul>
             <p class="note">The debug view draws what the painting hides: the boxes that occlude the robot, the walkable area and the exits.</p>

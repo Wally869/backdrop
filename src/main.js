@@ -5,6 +5,7 @@ import { Controller } from "./controller.js";
 import { pointInPolygon } from "./walkable.js";
 import "@fontsource-variable/inter"; // controls popup
 import "@fontsource-variable/fraunces";
+import { createMusic } from "./music.js";
 
 // The plate is a CSS background of #stage (16:9, letterboxed); the transparent
 // three.js canvas fills #stage, so 3D content shares the plate's frame.
@@ -85,8 +86,23 @@ help.addEventListener("click", (e) => { if (e.target === help) setHelp(false); }
 document.getElementById("help-open").addEventListener("click", (e) => { e.currentTarget.blur(); setHelp(true); });
 window.addEventListener("keydown", (e) => {
   if (e.code === "KeyH") setHelp(help.hidden);
+  else if (e.code === "KeyM") setMuted(!music.muted);
   else if (!help.hidden && (e.code === "Escape" || e.code === "Enter")) setHelp(false);
 });
+
+// Background music: starts on the first click or key press (browser autoplay rule); M or the speaker button mutes.
+const music = createMusic(`${BASE}audio/bgm.mp3`);
+const musicButton = document.getElementById("music-toggle");
+function setMuted(m) {
+  music.setMuted(m);
+  musicButton.classList.toggle("muted", m);
+  musicButton.title = m ? "Music off (M)" : "Music on (M)";
+}
+setMuted(music.muted);
+const startMusic = () => music.start().catch((err) => console.error("music failed", err));
+window.addEventListener("pointerdown", startMusic, { once: true });
+window.addEventListener("keydown", startMusic, { once: true });
+musicButton.addEventListener("click", (e) => { e.currentTarget.blur(); setMuted(!music.muted); });
 
 // Map transition: cancel orders, fade to black, swap the map, place the character at the target arrival, fade back.
 let transitioning = false;
@@ -131,6 +147,7 @@ window.__debug = {
   get gait() { return controller.gait; },
   get map() { return world.id; },
   get transitioning() { return transitioning; },
+  get music() { return { state: music.state, muted: music.muted }; },
   isWalkable: (x, z) => world.walkable.contains(x, z),
   // client pixel coordinates of a world point
   toClient(x, y, z) {
