@@ -4,7 +4,7 @@ import { WALK_SPEED, RUN_SPEED, SIT_HIPS } from './character.js';
 const TURN_RATE = 9; // rad/s
 const smooth = (k) => k * k * (3 - 2 * k);
 const KEYS = {
-  KeyW: 'f', ArrowUp: 'f', KeyS: 'b', ArrowDown: 'b', KeyA: 'l', ArrowLeft: 'l', ArrowRight: 'r',
+  KeyW: 'f', ArrowUp: 'f', KeyS: 'b', ArrowDown: 'b', KeyA: 'l', ArrowLeft: 'l', KeyD: 'r', ArrowRight: 'r',
 };
 
 const angleDiff = (a, b) => Math.atan2(Math.sin(a - b), Math.cos(a - b));
@@ -77,8 +77,8 @@ export class Controller {
     this.shift = e.shiftKey;
     // Ignored in a transition; a key still held after it needs a fresh press (auto-repeat does not re-arm it).
     if (down && (this.locked || (e.repeat && !this.keys.has(KEYS[e.code])))) return;
-    // D toggles the debug view (so "move right" is the right arrow key only).
-    if (e.code === 'KeyD') {
+    // G toggles the debug view.
+    if (e.code === 'KeyG') {
       if (down && !e.repeat) this.world.debug.visible = !this.world.debug.visible;
       return;
     }

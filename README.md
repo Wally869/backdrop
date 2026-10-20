@@ -8,9 +8,10 @@ Live demo: https://wally869.github.io/backdrop/
 
 - Click: walk to the point.
 - Double-click: run to the point.
-- W/A/S or arrow keys: walk relative to the camera. Hold Shift to run.
+- W/A/S/D or arrow keys: walk relative to the camera. Hold Shift to run.
 - Click the bench (first map): sit.
-- D: debug view (proxies, walkable area, markers).
+- G: debug view (proxies, walkable area, markers).
+- H: show the controls again.
 
 Walk to the far end of a map to go to the next one. To open a map directly, add `?map=plate_02` or `?map=plate_03` to the URL.
 
