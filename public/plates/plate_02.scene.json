@@ -1,0 +1,287 @@
+{
+ "_notes": "three.js conventions: Y up, right-handed, metres, ground plane y=0. Camera at (0,h,0), the plaza recedes along -Z. camera.rotationEuler = [x,y,z] radians, order 'YXZ' (yaw about Y, pitch about X, roll 0); lookAt is an equivalent target. fovVertical in degrees (three.js PerspectiveCamera.fov), derived from a 35 mm lens on 36 mm sensor width (horizontal fov) at 16:9. Proxy box: center, size [x,y,z] full extents, rotationY radians. Cylinder: center (middle), radius, height. plate_02: small plaza, camera at (0,h,0) looking down -Z toward the facade. Scale from the facade door leaf 2.0 m (ground row 380, top row 317 at x 681); the door base is taken as the ground plane. walkable: polygon [x,z] on y=0 from the painted plaza edges (left curb line ~x -5..-8, right curb ~x 5.5..6.5, far edge = pavement edge in front of the facade z about -27.5), clipped to the camera footprint; hole = round planter footprint (square around the cylinder) with 0.35 m margin. planter_lower/planter_upper: cylinders (stone tiers); tree_trunk: cylinder; tree_canopy: box at the trunk depth with a plate mask (foliage, see-through gaps). wall_*: invisible depth-only walls just outside the walkable edge (building fronts). Lamp post painted at the facade (z about -31) is outside the walkable area and has no proxy. Proxy \"mask\": file in /plates/ (1280x720, white = object); the app discards proxy fragments where the mask is black, in screen space. exit to_stairs (-> plate_03 arrival from_plaza): strip at the far right edge (x 3.4..5.4, z -27.3..-23.5) in front of the second street gap painted between the central facade and the right building row; arrival from_stairs at (2.6,-22). No walkable.surfaces: the whole plaza is y = 0. sun.direction: unit vector from the scene toward the sun (ray to the painted sun disc). Character height later: 1.28 m. Hand-read pixel coordinates are in tools/maps/plate_02.json. exits: [{name, zone: polygon [[x,z],...] on the ground inside the walkable area, to: target map id, arrival: arrival name in the target map}]; the character entering a zone leaves the map. arrivals: [{name, position: [x,z], facingY}] spawn points; facingY radians about Y, model forward +Z (glTF), same convention as markers (0 = faces +Z, toward the camera on a street map; pi = faces -Z). Arrival 'start' is the default spawn. Every arrival is inside the walkable area, outside every exit zone, at least 0.5 m from zones, holes and the walkable edge (checked by build_scene.py).",
+ "image": {
+  "width": 1280,
+  "height": 720
+ },
+ "camera": {
+  "position": [
+   0,
+   1.4625,
+   0
+  ],
+  "rotationEuler": [
+   -0.02093,
+   0.01278,
+   0.0
+  ],
+  "rotationOrder": "YXZ",
+  "lookAt": [
+   -0.1278,
+   1.2532,
+   -9.997
+  ],
+  "fovVertical": 32.2688,
+  "fovHorizontal": 54.4322,
+  "aspect": 1.77778,
+  "near": 0.1,
+  "far": 200,
+  "rollAssumed": "0 (horizon not visibly tilted; plate is only approximately one-point)"
+ },
+ "vp": {
+  "x": 655.91,
+  "y": 333.94,
+  "rmsPx": 6.91,
+  "lineCount": 9
+ },
+ "scaleReference": {
+  "object": "facade door leaf (without transom)",
+  "meters": 2.0
+ },
+ "proxies": [
+  {
+   "name": "floor",
+   "type": "box",
+   "center": [
+    -0.8,
+    -0.05,
+    -15.75
+   ],
+   "size": [
+    15.2,
+    0.1,
+    23.5
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "planter_lower",
+   "type": "cylinder",
+   "center": [
+    2.355,
+    0.207,
+    -11.79
+   ],
+   "radius": 1.085,
+   "height": 0.414,
+   "rotationY": 0.0
+  },
+  {
+   "name": "planter_upper",
+   "type": "cylinder",
+   "center": [
+    2.124,
+    0.521,
+    -11.79
+   ],
+   "radius": 0.625,
+   "height": 0.215,
+   "rotationY": 0.0
+  },
+  {
+   "name": "tree_trunk",
+   "type": "cylinder",
+   "center": [
+    2.124,
+    1.238,
+    -11.79
+   ],
+   "radius": 0.07,
+   "height": 1.218,
+   "rotationY": 0.0
+  },
+  {
+   "name": "tree_canopy",
+   "type": "box",
+   "center": [
+    2.173,
+    2.394,
+    -11.79
+   ],
+   "size": [
+    1.565,
+    1.693,
+    1.252
+   ],
+   "rotationY": 0.0,
+   "mask": "plate_02_mask_tree.png"
+  },
+  {
+   "name": "wall_facade",
+   "type": "box",
+   "center": [
+    -0.05,
+    3.5,
+    -31.55
+   ],
+   "size": [
+    7.9,
+    7.0,
+    0.5
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "wall_left",
+   "type": "box",
+   "center": [
+    -7.294,
+    3.5,
+    -15.836
+   ],
+   "size": [
+    0.4,
+    7.0,
+    23.745
+   ],
+   "rotationY": -0.144
+  },
+  {
+   "name": "wall_right",
+   "type": "box",
+   "center": [
+    6.749,
+    3.5,
+    -15.783
+   ],
+   "size": [
+    0.4,
+    7.0,
+    23.536
+   ],
+   "rotationY": 0.055
+  }
+ ],
+ "walkable": {
+  "outer": [
+   [
+    6.28,
+    -13.4
+   ],
+   [
+    5.5,
+    -27.5
+   ],
+   [
+    -5.0,
+    -27.5
+   ],
+   [
+    -6.972,
+    -13.868
+   ],
+   [
+    -2.303,
+    -5.067
+   ],
+   [
+    2.135,
+    -5.067
+   ]
+  ],
+  "holes": [
+   [
+    [
+     0.921,
+     -13.225
+    ],
+    [
+     3.79,
+     -13.225
+    ],
+    [
+     3.79,
+     -10.355
+    ],
+    [
+     0.921,
+     -10.355
+    ]
+   ]
+  ]
+ },
+ "markers": [],
+ "exits": [
+  {
+   "name": "to_street",
+   "zone": [
+    [
+     -6.473,
+     -13.004
+    ],
+    [
+     -2.743,
+     -5.964
+    ],
+    [
+     -1.682,
+     -6.527
+    ],
+    [
+     -5.412,
+     -13.567
+    ]
+   ],
+   "to": "plate_01",
+   "arrival": "from_plaza"
+  },
+  {
+   "name": "to_stairs",
+   "zone": [
+    [
+     3.4,
+     -27.3
+    ],
+    [
+     5.4,
+     -27.3
+    ],
+    [
+     5.4,
+     -23.5
+    ],
+    [
+     3.4,
+     -23.5
+    ]
+   ],
+   "to": "plate_03",
+   "arrival": "from_plaza"
+  }
+ ],
+ "arrivals": [
+  {
+   "name": "start",
+   "position": [
+    0.0,
+    -9.0
+   ],
+   "facingY": 0.0
+  },
+  {
+   "name": "from_street",
+   "position": [
+    -2.751,
+    -10.469
+   ],
+   "facingY": 1.5708
+  },
+  {
+   "name": "from_stairs",
+   "position": [
+    2.6,
+    -22.0
+   ],
+   "facingY": -0.3
+  }
+ ],
+ "sun": {
+  "direction": [
+   -0.1623,
+   0.2261,
+   -0.9605
+  ],
+  "elevationDeg": 13.1
+ },
+ "characterHeight": 1.28
+}

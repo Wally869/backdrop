@@ -1,0 +1,918 @@
+{
+ "_notes": "three.js conventions: Y up, right-handed, metres, ground plane y=0. Camera at (0,h,0) with the stairs along -Z; stair centre line x = 0.131. camera.rotationEuler = [x,y,z] radians, order 'YXZ' (yaw about Y, pitch about X, roll 0); lookAt is an equivalent target. fovVertical in degrees (three.js PerspectiveCamera.fov), derived from a 35 mm lens on 36 mm sensor width (horizontal fov) at 16:9. Proxy box: center, size [x,y,z] full extents, rotationY radians. Cylinder: center (middle), radius, height. plate_03: head-on stairway (13 steps) with side walls and handrails; camera at (0,h,0), the stairs recede along -Z, centred at x 0.13. Camera by tools/stair_fit.py: the receding lines (handrail tubes, wall coping) follow the stair slope, so their VP is the slope VP; pitch, camera height, rise and the depth of the first riser come from a fit of 13 traced nosing rows + 13 riser-foot rows + the slope VP row, with the stair-proportion prior 2*rise + run = 0.63 m (Blondel), which also sets the scale; the fitted horizon (row 247) agrees with the pavement joints (about row 250); the painted handrail then stands only about 0.52 m above the nosing line (not 0.9 m: the painting is not self-consistent); yaw from the slope VP. proxies: step_NN = box per step (riser + tread, y from 0 to NN*rise, one run deep); landing = box at y1; post_left/right = newel posts at the foot; wall_left_NN/wall_right_NN = stepped side walls (wall top above the nosing line from the post height); flank_left/right = the big wall fronts beside the stairs; floor = ground. Walkable height (optional): walkable.surfaces = [{name, polygon [[x,z],...], y} | {name, polygon, stairs:{bottom:[[x,z],[x,z]], top:[[x,z],[x,z]], y0, y1, steps, rise, run}}]; surfaces do not overlap in plan and together cover walkable.outer minus holes; flat surface height = y; on stairs the body height is a continuous ramp from y0 at bottom to y1 at top, a foot stands on the tread top y0 + rise*(index+1), index = floor(distance from bottom / run); stairs.polygon = bottom-left, bottom-right, top-right, top-left; bottom/top = the stair's bottom and top edges (left to right); y1 = y0 + steps*rise. The 13th tread (last run before the top edge) is already at landing height y1. A map without surfaces is all y = 0. arrivals.position stays [x,z]; the app takes y from the surface. Painting caveat: the landing is painted as a surface seen from above (rows 131-166) but the fitted camera (0.93 m) is below the landing level (1.46 m), so the model landing top spans rows 170-190+ below the top nosing and a character on the landing is drawn over the top steps; the landing is only 2 m deep. The ground in front of the stairs is a short strip (about 1.3 m to the bottom of the view, which the walkable area extends 0.6 m beyond: viewMarginBottom -0.6). No plate masks: no occluding silhouette is non-box. Hand-read pixel picks in tools/maps/plate_03.json. exits: [{name, zone: polygon [[x,z],...] on the ground inside the walkable area, to: target map id, arrival: arrival name in the target map}]; the character entering a zone leaves the map. arrivals: [{name, position: [x,z], facingY}] spawn points; facingY radians about Y, model forward +Z (glTF), same convention as markers (0 = faces +Z, toward the camera on a street map; pi = faces -Z). Arrival 'start' is the default spawn. Every arrival is inside the walkable area, outside every exit zone, at least 0.5 m from zones, holes and the walkable edge (checked by build_scene.py).",
+ "image": {
+  "width": 1280,
+  "height": 720
+ },
+ "camera": {
+  "position": [
+   0,
+   1.6097,
+   0
+  ],
+  "rotationEuler": [
+   -0.0907,
+   -0.00886,
+   0.0
+  ],
+  "rotationOrder": "YXZ",
+  "lookAt": [
+   0.0883,
+   0.704,
+   -9.9585
+  ],
+  "fovVertical": 32.2688,
+  "fovHorizontal": 54.4322,
+  "aspect": 1.77778,
+  "near": 0.1,
+  "far": 200,
+  "rollAssumed": "0 (step edges horizontal in the plate; roll not fitted)"
+ },
+ "vp": {
+  "x": 628.61,
+  "y": -136.63,
+  "rmsPx": 2.7,
+  "lineCount": 10
+ },
+ "scaleReference": {
+  "object": "stair proportion 2*rise + run = 0.63 m (Blondel); rise 0.193 m follows",
+  "meters": 0.63
+ },
+ "proxies": [
+  {
+   "name": "floor",
+   "type": "box",
+   "center": [
+    0.131,
+    -0.05,
+    0.171
+   ],
+   "size": [
+    80.0,
+    0.1,
+    11.657
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "step_01",
+   "type": "box",
+   "center": [
+    0.131,
+    0.096,
+    -6.007
+   ],
+   "size": [
+    2.802,
+    0.193,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "step_02",
+   "type": "box",
+   "center": [
+    0.131,
+    0.193,
+    -6.706
+   ],
+   "size": [
+    2.802,
+    0.386,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "step_03",
+   "type": "box",
+   "center": [
+    0.131,
+    0.289,
+    -7.406
+   ],
+   "size": [
+    2.802,
+    0.579,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "step_04",
+   "type": "box",
+   "center": [
+    0.131,
+    0.386,
+    -8.105
+   ],
+   "size": [
+    2.802,
+    0.772,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "step_05",
+   "type": "box",
+   "center": [
+    0.131,
+    0.482,
+    -8.804
+   ],
+   "size": [
+    2.802,
+    0.965,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "step_06",
+   "type": "box",
+   "center": [
+    0.131,
+    0.579,
+    -9.504
+   ],
+   "size": [
+    2.802,
+    1.158,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "step_07",
+   "type": "box",
+   "center": [
+    0.131,
+    0.675,
+    -10.203
+   ],
+   "size": [
+    2.802,
+    1.351,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "step_08",
+   "type": "box",
+   "center": [
+    0.131,
+    0.772,
+    -10.902
+   ],
+   "size": [
+    2.802,
+    1.544,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "step_09",
+   "type": "box",
+   "center": [
+    0.131,
+    0.868,
+    -11.602
+   ],
+   "size": [
+    2.802,
+    1.737,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "step_10",
+   "type": "box",
+   "center": [
+    0.131,
+    0.965,
+    -12.301
+   ],
+   "size": [
+    2.802,
+    1.93,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "step_11",
+   "type": "box",
+   "center": [
+    0.131,
+    1.061,
+    -13.0
+   ],
+   "size": [
+    2.802,
+    2.123,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "step_12",
+   "type": "box",
+   "center": [
+    0.131,
+    1.158,
+    -13.7
+   ],
+   "size": [
+    2.802,
+    2.316,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "step_13",
+   "type": "box",
+   "center": [
+    0.131,
+    1.254,
+    -14.399
+   ],
+   "size": [
+    2.802,
+    2.509,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "landing",
+   "type": "box",
+   "center": [
+    0.131,
+    1.254,
+    -16.249
+   ],
+   "size": [
+    2.802,
+    2.509,
+    3.0
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "post_left",
+   "type": "box",
+   "center": [
+    -1.441,
+    0.681,
+    -5.525
+   ],
+   "size": [
+    0.342,
+    1.361,
+    0.342
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "post_right",
+   "type": "box",
+   "center": [
+    1.709,
+    0.681,
+    -5.473
+   ],
+   "size": [
+    0.294,
+    1.361,
+    0.294
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "wall_left_01",
+   "type": "box",
+   "center": [
+    -1.57,
+    0.681,
+    -6.007
+   ],
+   "size": [
+    0.6,
+    1.361,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "wall_right_01",
+   "type": "box",
+   "center": [
+    1.832,
+    0.681,
+    -6.007
+   ],
+   "size": [
+    0.6,
+    1.361,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "wall_left_02",
+   "type": "box",
+   "center": [
+    -1.57,
+    0.777,
+    -6.706
+   ],
+   "size": [
+    0.6,
+    1.554,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "wall_right_02",
+   "type": "box",
+   "center": [
+    1.832,
+    0.777,
+    -6.706
+   ],
+   "size": [
+    0.6,
+    1.554,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "wall_left_03",
+   "type": "box",
+   "center": [
+    -1.57,
+    0.874,
+    -7.406
+   ],
+   "size": [
+    0.6,
+    1.747,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "wall_right_03",
+   "type": "box",
+   "center": [
+    1.832,
+    0.874,
+    -7.406
+   ],
+   "size": [
+    0.6,
+    1.747,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "wall_left_04",
+   "type": "box",
+   "center": [
+    -1.57,
+    0.97,
+    -8.105
+   ],
+   "size": [
+    0.6,
+    1.94,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "wall_right_04",
+   "type": "box",
+   "center": [
+    1.832,
+    0.97,
+    -8.105
+   ],
+   "size": [
+    0.6,
+    1.94,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "wall_left_05",
+   "type": "box",
+   "center": [
+    -1.57,
+    1.067,
+    -8.804
+   ],
+   "size": [
+    0.6,
+    2.133,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "wall_right_05",
+   "type": "box",
+   "center": [
+    1.832,
+    1.067,
+    -8.804
+   ],
+   "size": [
+    0.6,
+    2.133,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "wall_left_06",
+   "type": "box",
+   "center": [
+    -1.57,
+    1.163,
+    -9.504
+   ],
+   "size": [
+    0.6,
+    2.326,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "wall_right_06",
+   "type": "box",
+   "center": [
+    1.832,
+    1.163,
+    -9.504
+   ],
+   "size": [
+    0.6,
+    2.326,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "wall_left_07",
+   "type": "box",
+   "center": [
+    -1.57,
+    1.259,
+    -10.203
+   ],
+   "size": [
+    0.6,
+    2.519,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "wall_right_07",
+   "type": "box",
+   "center": [
+    1.832,
+    1.259,
+    -10.203
+   ],
+   "size": [
+    0.6,
+    2.519,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "wall_left_08",
+   "type": "box",
+   "center": [
+    -1.57,
+    1.356,
+    -10.902
+   ],
+   "size": [
+    0.6,
+    2.712,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "wall_right_08",
+   "type": "box",
+   "center": [
+    1.832,
+    1.356,
+    -10.902
+   ],
+   "size": [
+    0.6,
+    2.712,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "wall_left_09",
+   "type": "box",
+   "center": [
+    -1.57,
+    1.452,
+    -11.602
+   ],
+   "size": [
+    0.6,
+    2.905,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "wall_right_09",
+   "type": "box",
+   "center": [
+    1.832,
+    1.452,
+    -11.602
+   ],
+   "size": [
+    0.6,
+    2.905,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "wall_left_10",
+   "type": "box",
+   "center": [
+    -1.57,
+    1.549,
+    -12.301
+   ],
+   "size": [
+    0.6,
+    3.098,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "wall_right_10",
+   "type": "box",
+   "center": [
+    1.832,
+    1.549,
+    -12.301
+   ],
+   "size": [
+    0.6,
+    3.098,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "wall_left_11",
+   "type": "box",
+   "center": [
+    -1.57,
+    1.645,
+    -13.0
+   ],
+   "size": [
+    0.6,
+    3.291,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "wall_right_11",
+   "type": "box",
+   "center": [
+    1.832,
+    1.645,
+    -13.0
+   ],
+   "size": [
+    0.6,
+    3.291,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "wall_left_12",
+   "type": "box",
+   "center": [
+    -1.57,
+    1.742,
+    -13.7
+   ],
+   "size": [
+    0.6,
+    3.484,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "wall_right_12",
+   "type": "box",
+   "center": [
+    1.832,
+    1.742,
+    -13.7
+   ],
+   "size": [
+    0.6,
+    3.484,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "wall_left_13",
+   "type": "box",
+   "center": [
+    -1.57,
+    1.838,
+    -14.399
+   ],
+   "size": [
+    0.6,
+    3.677,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "wall_right_13",
+   "type": "box",
+   "center": [
+    1.832,
+    1.838,
+    -14.399
+   ],
+   "size": [
+    0.6,
+    3.677,
+    0.699
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "flank_left",
+   "type": "box",
+   "center": [
+    -3.234,
+    0.676,
+    -6.044
+   ],
+   "size": [
+    3.243,
+    1.352,
+    1.0
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "flank_right",
+   "type": "box",
+   "center": [
+    3.402,
+    0.692,
+    -6.004
+   ],
+   "size": [
+    3.093,
+    1.384,
+    1.0
+   ],
+   "rotationY": 0.0
+  }
+ ],
+ "walkable": {
+  "outer": [
+   [
+    2.527,
+    -5.457
+   ],
+   [
+    1.232,
+    -5.457
+   ],
+   [
+    1.232,
+    -16.749
+   ],
+   [
+    -0.97,
+    -16.749
+   ],
+   [
+    -0.97,
+    -5.457
+   ],
+   [
+    -2.409,
+    -5.457
+   ],
+   [
+    -1.735,
+    -4.112
+   ],
+   [
+    1.824,
+    -4.112
+   ]
+  ],
+  "holes": [],
+  "surfaces": [
+   {
+    "name": "ground",
+    "polygon": [
+     [
+      2.527,
+      -5.457
+     ],
+     [
+      1.232,
+      -5.457
+     ],
+     [
+      1.232,
+      -5.657
+     ],
+     [
+      -0.97,
+      -5.657
+     ],
+     [
+      -0.97,
+      -5.457
+     ],
+     [
+      -2.409,
+      -5.457
+     ],
+     [
+      -1.735,
+      -4.112
+     ],
+     [
+      1.824,
+      -4.112
+     ]
+    ],
+    "y": 0.0
+   },
+   {
+    "name": "stairs_1",
+    "polygon": [
+     [
+      -0.97,
+      -5.657
+     ],
+     [
+      1.232,
+      -5.657
+     ],
+     [
+      1.232,
+      -14.749
+     ],
+     [
+      -0.97,
+      -14.749
+     ]
+    ],
+    "stairs": {
+     "bottom": [
+      [
+       -0.97,
+       -5.657
+      ],
+      [
+       1.232,
+       -5.657
+      ]
+     ],
+     "top": [
+      [
+       -0.97,
+       -14.749
+      ],
+      [
+       1.232,
+       -14.749
+      ]
+     ],
+     "y0": 0.0,
+     "y1": 2.5088,
+     "steps": 13,
+     "rise": 0.193,
+     "run": 0.6993
+    }
+   },
+   {
+    "name": "landing",
+    "polygon": [
+     [
+      -0.97,
+      -14.749
+     ],
+     [
+      1.232,
+      -14.749
+     ],
+     [
+      1.232,
+      -16.749
+     ],
+     [
+      -0.97,
+      -16.749
+     ]
+    ],
+    "y": 2.5088
+   }
+  ]
+ },
+ "markers": [],
+ "exits": [
+  {
+   "name": "to_plaza",
+   "zone": [
+    [
+     1.5,
+     -5.3
+    ],
+    [
+     2.35,
+     -5.3
+    ],
+    [
+     1.85,
+     -4.3
+    ],
+    [
+     1.5,
+     -4.3
+    ]
+   ],
+   "to": "plate_02",
+   "arrival": "from_stairs"
+  }
+ ],
+ "arrivals": [
+  {
+   "name": "start",
+   "position": [
+    -1.0,
+    -4.8
+   ],
+   "facingY": 3.1416
+  },
+  {
+   "name": "from_plaza",
+   "position": [
+    0.6,
+    -4.8
+   ],
+   "facingY": 3.1416
+  }
+ ],
+ "sun": {
+  "direction": [
+   -0.45,
+   0.75,
+   0.48
+  ],
+  "elevationDeg": 48.6
+ },
+ "characterHeight": 1.28
+}

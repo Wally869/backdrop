@@ -1,0 +1,366 @@
+{
+ "_notes": "three.js conventions: Y up, right-handed, metres, ground plane y=0. Camera at (0,h,0), receding street along -Z. camera.rotationEuler = [x,y,z] radians, order 'YXZ' (yaw about Y, pitch about X, roll 0); lookAt is an equivalent target. fovVertical in degrees (three.js PerspectiveCamera.fov), derived from a 35 mm lens on 36 mm sensor width (horizontal fov) at 16:9. Proxy box: center, size [x,y,z] full extents, rotationY radians. Cylinder: center (middle), radius, height. walkable: polygons of [x,z] in metres on y=0; holes are footprints to avoid (bench incl. legs with 0.25 m margin, lamp post with 0.3 m margin). Scale from bench seat height 0.45 m (near feet ground row 537.5 px, seat near-edge top row 452.5 px). Fence posts and curb top edges assumed on a 0.15 m curb. Marker facing: facingY radians about Y for a model whose forward is +Z (glTF); bench_sit faces AWAY from the camera (facingY = pi, facing -Z; the bench is painted seen from behind); position = seat centre at seat height, approach = standing point on the far side of the bench, in front of the seat. Proxy \"mask\": file in /plates/ (1280x720, white = object); the app discards proxy fragments where the mask is black, in screen space. sun.direction: unit vector from the scene toward the sun. Character height later: 1.28 m. Hand-read pixel coordinates are in tools/maps/plate_01.json. exits: [{name, zone: polygon [[x,z],...] on the ground inside the walkable area, to: target map id, arrival: arrival name in the target map}]; the character entering a zone leaves the map. arrivals: [{name, position: [x,z], facingY}] spawn points; facingY radians about Y, model forward +Z (glTF), same convention as markers (0 = faces +Z, toward the camera on a street map; pi = faces -Z). Arrival 'start' is the default spawn. Every arrival is inside the walkable area, outside every exit zone, at least 0.5 m from zones, holes and the walkable edge (checked by build_scene.py).",
+ "image": {
+  "width": 1280,
+  "height": 720
+ },
+ "camera": {
+  "position": [
+   0,
+   1.2031,
+   0
+  ],
+  "rotationEuler": [
+   -0.04081,
+   0.01612,
+   0.0
+  ],
+  "rotationOrder": "YXZ",
+  "lookAt": [
+   -0.1611,
+   0.795,
+   -9.9904
+  ],
+  "fovVertical": 32.2688,
+  "fovHorizontal": 54.4322,
+  "aspect": 1.77778,
+  "near": 0.1,
+  "far": 200,
+  "rollAssumed": "0 (horizon not visibly tilted; left/right rails converge symmetrically)"
+ },
+ "vp": {
+  "x": 660.08,
+  "y": 309.18,
+  "rmsPx": 3.64,
+  "lineCount": 13
+ },
+ "scaleReference": {
+  "object": "bench seat height",
+  "meters": 0.45
+ },
+ "proxies": [
+  {
+   "name": "floor",
+   "type": "box",
+   "center": [
+    0.359,
+    -0.05,
+    -17.805
+   ],
+   "size": [
+    8.216,
+    0.1,
+    28.39
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "bench_back",
+   "type": "box",
+   "center": [
+    -0.245,
+    0.703,
+    -6.588
+   ],
+   "size": [
+    1.735,
+    0.314,
+    0.05
+   ],
+   "rotationY": 0.0,
+   "mask": "plate_01_mask_bench.png"
+  },
+  {
+   "name": "bench_seat",
+   "type": "box",
+   "center": [
+    -0.227,
+    0.401,
+    -7.057
+   ],
+   "size": [
+    1.689,
+    0.099,
+    0.987
+   ],
+   "rotationY": 0.0,
+   "mask": "plate_01_mask_bench.png"
+  },
+  {
+   "name": "bench_post_left",
+   "type": "box",
+   "center": [
+    -0.916,
+    0.41,
+    -6.518
+   ],
+   "size": [
+    0.1,
+    0.821,
+    0.09
+   ],
+   "rotationY": 0.0,
+   "mask": "plate_01_mask_bench.png"
+  },
+  {
+   "name": "bench_post_right",
+   "type": "box",
+   "center": [
+    0.43,
+    0.416,
+    -6.518
+   ],
+   "size": [
+    0.1,
+    0.832,
+    0.09
+   ],
+   "rotationY": 0.0,
+   "mask": "plate_01_mask_bench.png"
+  },
+  {
+   "name": "bench_leg_left",
+   "type": "box",
+   "center": [
+    -0.968,
+    0.176,
+    -7.841
+   ],
+   "size": [
+    0.11,
+    0.351,
+    0.07
+   ],
+   "rotationY": 0.0,
+   "mask": "plate_01_mask_bench.png"
+  },
+  {
+   "name": "bench_leg_right",
+   "type": "box",
+   "center": [
+    0.41,
+    0.176,
+    -7.841
+   ],
+   "size": [
+    0.11,
+    0.351,
+    0.07
+   ],
+   "rotationY": 0.0,
+   "mask": "plate_01_mask_bench.png"
+  },
+  {
+   "name": "bench_rail_left",
+   "type": "box",
+   "center": [
+    -0.884,
+    0.03,
+    -7.18
+   ],
+   "size": [
+    0.07,
+    0.07,
+    1.325
+   ],
+   "rotationY": -3.095,
+   "mask": "plate_01_mask_bench.png"
+  },
+  {
+   "name": "bench_rail_right",
+   "type": "box",
+   "center": [
+    0.381,
+    0.03,
+    -7.18
+   ],
+   "size": [
+    0.07,
+    0.07,
+    1.323
+   ],
+   "rotationY": -3.139,
+   "mask": "plate_01_mask_bench.png"
+  },
+  {
+   "name": "lamp_post",
+   "type": "cylinder",
+   "center": [
+    1.707,
+    2.516,
+    -27.439
+   ],
+   "radius": 0.099,
+   "height": 5.033,
+   "rotationY": 0.0
+  },
+  {
+   "name": "fence_left",
+   "type": "box",
+   "center": [
+    -4.364,
+    0.525,
+    -36.805
+   ],
+   "size": [
+    0.08,
+    0.75,
+    66.39
+   ],
+   "rotationY": 0.0
+  },
+  {
+   "name": "fence_right",
+   "type": "box",
+   "center": [
+    5.26,
+    0.525,
+    -36.805
+   ],
+   "size": [
+    0.08,
+    0.75,
+    66.39
+   ],
+   "rotationY": 0.0
+  }
+ ],
+ "walkable": {
+  "outer": [
+   [
+    4.467,
+    -9.825
+   ],
+   [
+    4.467,
+    -32.0
+   ],
+   [
+    -3.748,
+    -32.0
+   ],
+   [
+    -3.748,
+    -7.715
+   ],
+   [
+    -1.752,
+    -3.979
+   ],
+   [
+    1.586,
+    -3.979
+   ]
+  ],
+  "holes": [
+   [
+    [
+     -1.463,
+     -8.126
+    ],
+    [
+     0.973,
+     -8.126
+    ],
+    [
+     0.973,
+     -6.223
+    ],
+    [
+     -1.463,
+     -6.223
+    ]
+   ],
+   [
+    [
+     1.308,
+     -27.838
+    ],
+    [
+     2.107,
+     -27.838
+    ],
+    [
+     2.107,
+     -27.04
+    ],
+    [
+     1.308,
+     -27.04
+    ]
+   ]
+  ]
+ },
+ "markers": [
+  {
+   "name": "bench_sit",
+   "position": [
+    -0.227,
+    0.45,
+    -7.057
+   ],
+   "facingY": 3.14159,
+   "facing": [
+    0,
+    0,
+    -1
+   ],
+   "approach": [
+    -0.227,
+    -8.376
+   ]
+  }
+ ],
+ "exits": [
+  {
+   "name": "to_plaza",
+   "zone": [
+    [
+     -3.748,
+     -32.0
+    ],
+    [
+     4.467,
+     -32.0
+    ],
+    [
+     4.467,
+     -30.5
+    ],
+    [
+     -3.748,
+     -30.5
+    ]
+   ],
+   "to": "plate_02",
+   "arrival": "from_street"
+  }
+ ],
+ "arrivals": [
+  {
+   "name": "start",
+   "position": [
+    0.3595,
+    -5.479
+   ],
+   "facingY": 0.0
+  },
+  {
+   "name": "from_plaza",
+   "position": [
+    0.36,
+    -29.8
+   ],
+   "facingY": 0.0
+  }
+ ],
+ "sun": {
+  "direction": [
+   -0.5116,
+   0.6465,
+   -0.566
+  ],
+  "elevationDeg": 40.3
+ },
+ "characterHeight": 1.28
+}
